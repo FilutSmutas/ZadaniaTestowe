@@ -24,7 +24,7 @@ namespace ZadaniaTestowe
         {
             driver = new TWebDriver();
             //driver = new ChromeDriver();
-            driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
+            driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(15);
             driver.Url = "https://www.google.pl/maps/";
 
             //Jeśli nastąpi przekierowanie na stronę zgody na pliki cookies, naciśnij
@@ -63,9 +63,10 @@ namespace ZadaniaTestowe
             //Wpisanie miejsca docelowego i wciśnięcie enter w celu wyszukania go
             try
             {
-                var searchBox = driver.FindElement(By.Id("searchboxinput"));
-                searchBox.SendKeys(destinationPlace);
-                searchBox.SendKeys(Keys.Return);
+                var destinationSearchBox = driver.FindElement(By.Id("searchboxinput"));
+                destinationSearchBox.Clear();
+                destinationSearchBox.SendKeys(destinationPlace);
+                destinationSearchBox.SendKeys(Keys.Return);
                 test.Pass("Insert destination into searchbox and press Enter");
 
             }
@@ -92,9 +93,10 @@ namespace ZadaniaTestowe
             //Wpisanie miejsca startowego i wciśnięcie enter w celu wyszukania trasy
             try
             {
-                var startPlace = driver.FindElement(By.XPath("//div[@id = 'sb_ifc51']/input"));
-                startPlace.SendKeys(beginPlace);
-                startPlace.SendKeys(Keys.Return);
+                var startPlaceTextBox = driver.FindElement(By.XPath("//div[@id = 'sb_ifc51']/input"));
+                startPlaceTextBox.Clear();
+                startPlaceTextBox.SendKeys(beginPlace);
+                startPlaceTextBox.SendKeys(Keys.Return);
                 test.Pass("Insert starting place and press enter");
             }
             catch (Exception ex)

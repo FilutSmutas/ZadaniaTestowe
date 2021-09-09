@@ -15,25 +15,22 @@ namespace ZadaniaTestowe
     {
         ExtentReports rep = ExtentBuilder.GetExtent();
 
-        
-
-        ExtentTest test;
-
         [Test(Description="Check if Luke Skylwalker was from Tatooine")]
         public void CheckIfLukeIsFromTatooine()
         { 
-            test = rep.CreateTest("SWTest", "Check if Luke Skylwalker was from Tatooine");
+            var test = rep.CreateTest("SWTest", "Check if Luke Skylwalker was from Tatooine");
             
+            //Wyślij żądanie GET żeby pobrać informacje o Luke'u
             var client = new RestClient("https://swapi.dev/api/");
-
             var request = new RestRequest("people/1", Method.GET);
-
             test.Info("Send GET request to get data about Luke");
             var response = client.Execute(request);
 
+            //Deserializacja odpowiedzi
             StarWarsHeroResponse swResponse = new JsonDeserializer().
                 Deserialize<StarWarsHeroResponse>(response);
 
+            //Sprawdź, czy udało się odczytać URI pod którym można odczytać informacje o planecie Luke'a
             try
             {
                 Assert.That(swResponse.Homeworld, Is.Not.Empty);
@@ -44,14 +41,16 @@ namespace ZadaniaTestowe
                 throw ex;
             }
 
+            //Wyślij żądanie GET żeby pobrać informacje o planecie Luke'a
             request = new RestRequest(swResponse.Homeworld, Method.GET);
-
             test.Info("Send GET request to get data about Luke's HomeWorld");
             response = client.Execute(request);
 
+            //Deserializacja odpowiedzi
             StarWarsPlanetResponse swPlanetResponse = new JsonDeserializer().
                 Deserialize<StarWarsPlanetResponse>(response);
 
+            //Sprawdź czy nazwa planety to Tatooine
             try
             {
                 Assert.That(swPlanetResponse.Name, Is.EqualTo("Tatooine"));
@@ -74,22 +73,22 @@ namespace ZadaniaTestowe
 
     public class StarWarsHeroResponse
     {
-        //public string Name { get; set; }
-        //public int Height { get; set; }
-        //public int Mass { get; set; }
-        //public string HairColor { get; set; }
-        //public string SkinColor { get; set; }
-        //public string EyeColor { get; set; }
-        //public string BirthYear { get; set; }
-        //public string Gender { get; set; }
+        public string Name { get; set; }
+        public int Height { get; set; }
+        public int Mass { get; set; }
+        public string HairColor { get; set; }
+        public string SkinColor { get; set; }
+        public string EyeColor { get; set; }
+        public string BirthYear { get; set; }
+        public string Gender { get; set; }
         public string Homeworld { get; set; }
-        //public List<string> Films { get; set; }
-        //public List<string> Species { get; set; }
-        //public List<string> Vehicles { get; set; }
-        //public List<string> Starships { get; set; }
-        //public DateTime Created { get; set; }
-        //public DateTime Edited { get; set; }
-        //public string Url { get; set; }
+        public List<string> Films { get; set; }
+        public List<string> Species { get; set; }
+        public List<string> Vehicles { get; set; }
+        public List<string> Starships { get; set; }
+        public DateTime Created { get; set; }
+        public DateTime Edited { get; set; }
+        public string Url { get; set; }
 
     }
 
