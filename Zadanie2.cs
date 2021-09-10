@@ -4,6 +4,7 @@ using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Firefox;
 using OpenQA.Selenium.Safari;
+using OpenQA.Selenium.Support.UI;
 using System;
 using System.Collections.ObjectModel;
 using System.Text.RegularExpressions;
@@ -24,7 +25,7 @@ namespace ZadaniaTestowe
         {
             driver = new TWebDriver();
             //driver = new ChromeDriver();
-            driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(15);
+            driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
             driver.Url = "https://www.google.pl/maps/";
 
             //Jeśli nastąpi przekierowanie na stronę zgody na pliki cookies, naciśnij
@@ -78,6 +79,9 @@ namespace ZadaniaTestowe
             }
 
             //Wciśnięcie przycisku Wyznaczania trasy
+            var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(15));
+            wait.Until(d => d.FindElement(By.XPath("//button[@data-value='Wyznacz trasę']")));
+
             try
             {
                 driver.FindElement(By.XPath("//button[@data-value='Wyznacz trasę']")).Click();
